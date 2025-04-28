@@ -1,4 +1,4 @@
-#include <iostream>
+#include<iostream>
 
 using namespace std;
 
@@ -27,6 +27,11 @@ void ler_produtos(Produtos lista[]){
 	system("cls");
 	
 }
+
+void mostrar_produtos(Produtos lista[], ){
+
+}
+
 
 struct Cidades{
 	int codigo;
