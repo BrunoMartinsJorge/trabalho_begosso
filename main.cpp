@@ -1,4 +1,5 @@
 #include<iostream>
+#include <list>
 
 using namespace std;
 
@@ -6,11 +7,6 @@ struct Tipo_Produtos{
 	int codigo;
 	string descricao;
 };
-
-void ler_tipo_produtos(Tipo_Produtos lista[]){
-	system("cls");
-	
-}
 
 struct Produtos{
 	int codigo;
@@ -23,9 +19,45 @@ struct Produtos{
 	float valor_unitario;
 };
 
-void ler_produtos(Produtos lista[]){
-	system("cls");
-	
+struct Cidades{
+	int codigo;
+	string descricao;
+	char UF[2];
+};
+
+struct Fornecedores{
+	int codigo;
+	string nome;
+	string endereco;
+	string telefone;
+	int codigo_cidade;
+	string cnpj;
+};
+
+void ler_tipo_produtos(Tipo_Produtos lista[]) {
+    system("cls");
+    cout << "Leitura de tipo de produtos" << endl;
+    for (int i = 0; i < 3; i++) {
+        cout << "Digite o codigo do produto: ";
+        cin >> lista[i].codigo;
+        cout << "Digite o descricao do produto: ";
+        cin >> lista[i].descricao;
+    }
+}
+
+void ler_produtos(Produtos lista[]) {
+    system("cls");
+    cout << "Leitura de produtos" << endl;
+    for (int i = 0; i < 3; i++) {
+        cout << "Codigo: ";
+        cin >> lista[i].codigo;
+        cout << "Descricao: ";
+        cin >> lista[i].descricao;
+        cout << "Tipo produto > ID: ";
+        cin >> lista[i].tipo_produto.codigo;
+        cout << "Tipo produto < Descricao: ";
+        cin >> lista[i].tipo_produto.descricao;
+    }
 }
 
 void mostrar_produtos(Produtos lista[]){
@@ -41,19 +73,19 @@ void mostrar_produtos(Produtos lista[]){
         cout<<"Estoque maximo: "<<lista[i].estoque_maximo<<endl;
         cout<<"Valor unitário: "<<lista[i].valor_unitario<<endl;
     }
-
 }
 
-struct Cidades{
-	int codigo;
-	string descricao;
-	char UF[2];
-};
-
-
-void ler_cidades(Cidades lista[]){
-	system("cls");
-	
+void ler_cidades(Cidades lista[]) {
+    system("cls");
+    cout << "Leitura de cidades" << endl;
+    for (int i = 0; i < 3; i++) {
+        cout << "Codigo: ";
+        cin >> lista[i].codigo;
+        cout << "Descricao: ";
+        cin >> lista[i].descricao;
+        cout << "UF: ";
+        cin >> lista[i].UF;
+    }
 }
 
 void mostrar_cidades(Cidades lista[]){
@@ -65,18 +97,23 @@ void mostrar_cidades(Cidades lista[]){
     }
 }
 
-struct Fornecedores{
-	int codigo;
-	string nome;
-	string endereco;
-	string telefone;
-	int codigo_cidade;
-	string cnpj;
-};
-
-void ler_fornecedores(Fornecedores lista[]){
-	system("cls");
-	
+void ler_fornecedores(Fornecedores lista[]) {
+    system("cls");
+    cout << "Leitura de fornecedores" << endl;
+    for (int i = 0; i < 3; i++) {
+        cout << "Codigo: ";
+        cin >> lista[i].codigo;
+        cout << "Descricao: ";
+        cin >> lista[i].nome;
+        cout << "Endereco: ";
+        cin >> lista[i].endereco;
+        cout << "Telefone: ";
+        cin >> lista[i].telefone;
+        cout << "Codigo_cidade: ";
+        cin >> lista[i].codigo_cidade;
+        cout << "Cnpj: ";
+        cin >> lista[i].cnpj;
+    }
 }
 
 void mostrar_fornecedores(Fornecedores lista[]){
@@ -91,8 +128,139 @@ void mostrar_fornecedores(Fornecedores lista[]){
     }
 }
 
+void incluir_novo_fornecedor(Fornecedores lista[]) {
+    system("cls");
+    Fornecedores novoFornecedor;
+    cout << "Adicionar novo fornecedore" << endl;
+    cout << "Codigo: ";
+    cin >> novoFornecedor.codigo;
+    cout << "Nome: ";
+    cin >> novoFornecedor.nome;
+    cout << "Endereco: ";
+    cin >> novoFornecedor.endereco;
+    cout << "Telefone: ";
+    cin >> novoFornecedor.telefone;
+    cout << "Codigo_cidade: ";
+    cin >> novoFornecedor.codigo_cidade;
+    cout << "Cnpj: ";
+    cin >> novoFornecedor.cnpj;
+}
 
 
-int main(){
-	
+void incluir_produto(Produtos lista_atual[], Produtos lista_adicionar[], Fornecedores lista_fornecedor[], int tamanho){
+    Produtos novo;
+    int i=0,j=0,s=0,k=0;
+
+    while(true){
+        cout << "Codigo do novo produto: ";
+        cin >> novo.codigo;
+    
+        bool codigoExiste = false;
+        for(int i = 0; i < 3; i++){
+            if(lista_atual[i].codigo == novo.codigo){
+                cout << "Código já existe!" << endl;
+                codigoExiste = true;
+                break;
+            }
+        }
+    
+        if(!codigoExiste){
+            break;
+        }
+    }
+    cout<<"Descricao: ";
+    cin>>novo.descricao;
+    cout<<"ID Tipo do produto: ";
+    cin>> novo.tipo_produto.codigo;
+    cout<<"Descricao do tipo do produto: ";
+    cin>> novo.tipo_produto.descricao;
+    cout<<"Quantidade no estoque: ";
+    cin>> novo.qtd_estoque;
+    cout<<"Estoque minimo: ";
+    cin>>novo.estoque_minimo;
+    cout<<"Estoque maximo: ";
+    cin>>novo.estoque_minimo;
+    cout<<"Valor unitário: ";
+    cin>>novo.valor_unitario;
+
+    
+    //ordenar
+    while(j<3){
+        if(novo.codigo< lista_atual[j].codigo){
+            lista_adicionar[s++]=novo;
+            while(j<3){
+                lista_adicionar[s++] = lista_atual[j++];
+            }
+        }
+        else{
+            lista_adicionar[s++] = lista_atual[j++];
+        }
+        break;
+        
+    }
+    if(k<tamanho+1){
+        lista_adicionar[s] = novo;
+    }
+
+
+    cout<<"Produto inserido com sucesso!"<<endl;
+    
+
+    int idfornecedor;
+    while(true){
+        cout<<"Digite o codigo do fornecedor: ";
+        cin>> idfornecedor;
+        for(int i=0; i<3; i++){
+            if(lista_fornecedor[i].codigo!= idfornecedor){
+                cout<<"Código de fornecedor não existe!";
+                return;
+            }
+            else{
+                cout<<"Nome do fornecedor: "<<lista_fornecedor[i].codigo<<endl;
+                break;
+            }
+        }
+    }
+    
+
+}
+
+
+int menu() {
+
+    system("cls");
+
+    int opcao = -1;
+    cout << "1# -> Adicionar fornecedores" << endl;
+    cout << "2# -> Adicionar novo produto" << endl;
+
+    
+    cin >> opcao;
+
+    switch (opcao) {
+        case 1:
+            cout << "Oi";
+            break;
+        case 2:
+            cout<<"Breno:)";
+        default: cout << "Opcao invalida";
+    }
+
+    return opcao;
+
+
+
+}
+
+int main() {
+    Produtos vet_produtosatuais[10];
+    Produtos vet_novaLista[10];
+    Fornecedores vet_listafornecedores[3];
+    ler_produtos(vet_produtosatuais);
+    int tam = 3;
+    incluir_produto(vet_produtosatuais, vet_novaLista, vet_listafornecedores);
+    tam++;
+
+    int opcao = menu();
+    return 0;
 }
