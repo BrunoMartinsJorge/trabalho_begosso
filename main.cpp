@@ -91,6 +91,8 @@ void mostrar_fornecedores(Fornecedores lista[]){
     }
 }
 
+
+
 int main(){
 	
 }
