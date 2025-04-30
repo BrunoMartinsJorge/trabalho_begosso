@@ -226,6 +226,34 @@ void incluir_produto(Produtos lista_atual[], Produtos lista_adicionar[], Fornece
 }
 
 
+//funcao consultar produto
+void consultar_produto(Produtos lista[], Fornecedores listaFor[]){
+    int codigo;
+    
+    while(true){
+        cout<<"Digite o código do produto que deseja consultar: ";
+        cin>>codigo;
+        for(int i=0; i<3; i++){
+            if(lista[i].codigo != codigo){
+                cout<<"Código de produto não existe!";
+                return;
+            }
+            else{
+                cout<<"Produto encontrado!";
+                cout<<"Descricao: "<<lista[i].descricao<<endl;
+                cout<<"Tipo do produto: "<<lista[i].tipo_produto.descricao<<endl;
+                for(int i=0; i<3; i++){
+                    if(lista[i].codigo_fornecedor == listaFor[i].codigo){
+                        cout<<"Nome do Fornecedor: "<<listaFor[i].nome<<endl;
+                    }
+                }
+                cout<<"valor total em estoque do produto: "<<lista[i].qtd_estoque*lista[i].valor_unitario;
+                break;
+            }
+        }
+    }
+}
+
 int menu() {
 
     system("cls");
@@ -233,7 +261,7 @@ int menu() {
     int opcao = -1;
     cout << "1# -> Adicionar fornecedores" << endl;
     cout << "2# -> Adicionar novo produto" << endl;
-
+    
     
     cin >> opcao;
 
@@ -253,13 +281,14 @@ int menu() {
 }
 
 int main() {
-    Produtos vet_produtosatuais[10];
-    Produtos vet_novaLista[10];
+    Produtos vet_produtoslidos[10];
+    Produtos vet_listaatual[10];
     Fornecedores vet_listafornecedores[3];
-    ler_produtos(vet_produtosatuais);
+    ler_produtos( vet_produtoslidos);
     int tam = 3;
-    incluir_produto(vet_produtosatuais, vet_novaLista, vet_listafornecedores);
-    tam++;
+    //incluir_produto(vet_produtosatuais, vet_listaatual, vet_listafornecedores);
+    //tam++;
+    consultar_produto(vet_listaatual, vet_listafornecedores);
 
     int opcao = menu();
     return 0;
