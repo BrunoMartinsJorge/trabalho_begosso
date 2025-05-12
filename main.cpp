@@ -53,7 +53,7 @@ void mostrar_fornecedores(Fornecedores []);
 
 void mostrar_tipo_produtos(Tipo_Produtos []);
 
-void incluir_novo_fornecedor(Fornecedores [], Cidades [], int);
+void incluir_novo_fornecedor(Fornecedores [], Cidades []);
 
 bool validar_cnpj(string cnpj);
 
@@ -69,7 +69,7 @@ void mesclar_produtos(Produtos [], Produtos [], Produtos [], int, int);
 
 void validar_se_palavra_for_palindromo(Produtos [], int);
 
-void vender_produto(int, Produtos [], Fornecedores []);
+void vender_produto(Produtos [], Fornecedores []);
 
 void incluir_produto(Produtos [], Fornecedores [], int);
 
@@ -141,7 +141,6 @@ int buscar_produto_por_codigo(Produtos lista[], int codigo_produto, int tamanho)
     return -1;
 }
 
-
 int buscar_fornecedor_por_codigo(Fornecedores lista[], int codigo_fornecedor, int tamanho) {
     int inicio = 0, fim = tamanho - 1;
     while (inicio <= fim) {
@@ -184,15 +183,15 @@ void exibir_estoque_abaixo_minimo(Produtos lista_produtos[], Fornecedores lista_
 }
 
 
-void menu(Produtos lista_produtos[], Fornecedores lista_fornecedores[], Cidades lista_cidades[],
-          Tipo_Produtos lista_tipo_produtos[]) {
+void menu(Produtos lista_produtos[], int tamanho_prod, Fornecedores lista_fornecedores[], int tamanho_forn,
+          Cidades lista_cidades[], int tamanho_cida,
+          Tipo_Produtos lista_tipo_produtos[], int tamanho_tip) {
     int opcao = -1;
     int opcao_ler = 0;
-    int qtd_fornece_adicionar = -1;
-    int codigo_produto = -1;
     Produtos novaLista[2];
-    while (opcao != 0) {
-        system("cls");
+    char continuar = 's';
+    system("cls");
+    while (opcao == -1) {
         cout << "<!--------------------* Menu *---------------------!>" << endl;
         cout << "<! Opcao #1 := Ler dados                           !>" << endl;
         cout << "<! Opcao #2 := Adicionar novo(s) fornecedor(es)    !>" << endl;
@@ -237,37 +236,83 @@ void menu(Produtos lista_produtos[], Fornecedores lista_fornecedores[], Cidades 
                 default:
                     cout << "Opcao Selecionada invalida!" << endl;
             }
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
+            }
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
             break;
         case 2:
-            while (qtd_fornece_adicionar == -1) {
-                cout << "Quantos fornecedores você deseja adcionar?: ";
-                cin >> qtd_fornece_adicionar;
+            incluir_novo_fornecedor(lista_fornecedores, lista_cidades);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
             }
-            incluir_novo_fornecedor(lista_fornecedores, lista_cidades, qtd_fornece_adicionar);
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
             break;
         case 3:
             incluir_produto(lista_produtos, lista_fornecedores, 3);
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
+            }
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
             break;
         case 4:
-            cout << "Digite o código do produto que desejá comprar: ";
-            cin >> codigo_produto;
-            vender_produto(codigo_produto, lista_produtos, lista_fornecedores);
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+            vender_produto(lista_produtos, lista_fornecedores);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
+            }
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
             break;
         case 5:
             consultar_produto(lista_produtos, lista_fornecedores);
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
+            }
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
             break;
         case 6:
             exibir_estoque_abaixo_minimo(lista_produtos, lista_fornecedores, 3);
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
+            }
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
             break;
         case 7:
             validar_se_palavra_for_palindromo(lista_produtos, 3);
-            //menu(lista_produtos, lista_fornecedores, lista_cidades, lista_tipo_produtos);
+            getc(0);
+            cout << "Deseja continuar? (s/n): ";
+            cin >> continuar;
+            if (tolower(continuar) == 's') {
+                menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida,
+                     lista_tipo_produtos, tamanho_tip);
+            }
+        //menu(lista_produtos, tamanho_prod, lista_fornecedores, tamanho_forn, lista_cidades, tamanho_cida, lista_tipo_produtos, tamanho_tip);
+            break;
+        default:
+            cout << "Opcao Selecionada invalida!" << endl;
             break;
     }
 }
@@ -277,34 +322,36 @@ int main() {
 
     Tipo_Produtos tipos[] = {
         {1, "Alimentos"},
-        {2, "Limpeza"},
-        {3, "Bebidas"}
     };
+
 
     Cidades cidades[] = {
         {1, "São Paulo", "SP"},
-        {2, "Rio de Janeiro", "RJ"},
-        {3, "Curitiba", "PR"}
     };
 
     Fornecedores fornecedores[] = {
         {1, "Fornecedor A", "Rua A, 123", "(11) 1111-1111", 1, "12345678000100"},
-        {2, "Fornecedor B", "Rua B, 456", "(21) 2222-2222", 2, "98765432000199"},
-        {3, "Fornecedor C", "Rua C, 789", "(41) 3333-3333", 3, "56789012000188"}
     };
 
     Produtos produtos[] = {
         {1, "Ovo", tipos[0], 1, 50, 10, 300, 25.50},
-        {2, "Sabão em Pó 1kg", tipos[1], 2, 30, 150, 200, 9.99},
-        {3, "Refrigerante 2L", tipos[2], 3, 200, 100, 300, 6.49}
     };
 
-    menu(produtos, fornecedores, cidades, tipos);
+    int tamanho_prod = 1, tamanho_forn = 3, tamanho_cida = 3, tamanho_tip = 3;
+
+    menu(produtos, tamanho_prod, fornecedores, tamanho_forn, cidades, tamanho_cida, tipos, tamanho_tip);
 }
 
 // 1# Funões de Leitura:
 // Ler cidades
 void ler_cidades(Cidades lista[]) {
+    int qtd_cidades = 0;
+    cout << "Quantos produtos você quer ler? ";
+    cin >> qtd_cidades;
+    while (qtd_cidades <= 0) {
+        cout << "Por favor digite uma quaantidade válida de cidades para serem adicionados: ";
+        cin >> qtd_cidades;
+    }
     cout << "Leitura de cidades" << endl;
     for (int i = 0; i < 5; i++) {
         cout << "Codigo: ";
@@ -318,6 +365,13 @@ void ler_cidades(Cidades lista[]) {
 
 // Ler tipo produtos
 void ler_tipo_produtos(Tipo_Produtos lista[]) {
+    int qtd_tipo_produtos = 0;
+    cout << "Quantos produtos você quer ler? ";
+    cin >> qtd_tipo_produtos;
+    while (qtd_tipo_produtos <= 0) {
+        cout << "Por favor digite uma quaantidade válida de tipos de produtos para serem adicionados: ";
+        cin >> qtd_tipo_produtos;
+    }
     cout << "Leitura de tipo de produtos" << endl;
     for (int i = 0; i < 3; i++) {
         cout << "Digite o codigo do produto: ";
@@ -329,8 +383,16 @@ void ler_tipo_produtos(Tipo_Produtos lista[]) {
 
 // Ler produtos
 void ler_produtos(Produtos lista[]) {
+    int qtd_produtos = 0;
+    cout << "Quantos produtos você quer ler? ";
+    cin >> qtd_produtos;
+    while (qtd_produtos <= 0) {
+        cout << "Por favor digite uma quaantidade válida de produtos para serem adicionados: ";
+        cin >> qtd_produtos;
+    }
+    //Produtos novaLista[qtd_produtos];
     cout << "Leitura de produtos" << endl;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < qtd_produtos; i++) {
         cout << "Codigo: ";
         cin >> lista[i].codigo;
         cout << "Descricao: ";
@@ -347,13 +409,22 @@ void ler_produtos(Produtos lista[]) {
         cin >> lista[i].estoque_minimo;
         cout << "Estoque maximo: ";
         cin >> lista[i].estoque_maximo;
+        cout << "Valor unitário: ";
+        cin >> lista[i].valor_unitario;
     }
 }
 
 // Ler fornecedores
 void ler_fornecedores(Fornecedores lista[]) {
+    int qtd_fornecedores = 0;
+    cout << "Quantos produtos você quer ler? ";
+    cin >> qtd_fornecedores;
+    while (qtd_fornecedores <= 0) {
+        cout << "Por favor digite uma quaantidade válida de fornecedores para serem adicionados: ";
+        cin >> qtd_fornecedores;
+    }
     cout << "Leitura de fornecedores" << endl;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < qtd_fornecedores; i++) {
         cout << "Codigo: ";
         cin >> lista[i].codigo;
         cout << "Descricao: ";
@@ -372,9 +443,16 @@ void ler_fornecedores(Fornecedores lista[]) {
 // Fim da etapa 1#
 
 // 2# Função para incluir novo(s) fornecedor(es):
-void incluir_novo_fornecedor(Fornecedores lista[], Cidades lista_cidades[], int qtd_fornecedores_adicionar) {
-    Fornecedores novosFornecedores[qtd_fornecedores_adicionar];
-    for (int i = 0; i < qtd_fornecedores_adicionar; i++) {
+void incluir_novo_fornecedor(Fornecedores lista[], Cidades lista_cidades[]) {
+    int qtd_fornecedores = 0;
+    cout << "Quantos produtos você quer ler? ";
+    cin >> qtd_fornecedores;
+    while (qtd_fornecedores <= 0) {
+        cout << "Por favor digite uma quaantidade válida de produtos para serem adicionados: ";
+        cin >> qtd_fornecedores;
+    }
+    Fornecedores novosFornecedores[qtd_fornecedores];
+    for (int i = 0; i < qtd_fornecedores; i++) {
         system("cls");
         cout << "Adicionar novos fornecedores" << endl;
         cout << "Codigo: ";
@@ -405,10 +483,10 @@ void incluir_novo_fornecedor(Fornecedores lista[], Cidades lista_cidades[], int 
             validar_cnpj(cnpj);
         }
     }
-    Fornecedores novaLista[3 + qtd_fornecedores_adicionar];
-    mesclar_fornecedores(lista, 3, novosFornecedores, qtd_fornecedores_adicionar, novaLista);
+    Fornecedores novaLista[3 + qtd_fornecedores];
+    mesclar_fornecedores(lista, 3, novosFornecedores, qtd_fornecedores, novaLista);
     cout << "Valores para nova lista: " << endl;
-    for (int i = 0; i < qtd_fornecedores_adicionar + 3; i++) {
+    for (int i = 0; i < qtd_fornecedores + 3; i++) {
         cout << "<!---------------------------------------------------------------!>" << endl;
         cout << "Codigo: " << novaLista[i].codigo << endl;
         cout << "Nome: " << novaLista[i].nome << endl;
@@ -426,7 +504,8 @@ int buscar_cidade_por_codigo(int codigo, Cidades lista[], int tamanho) {
         int meio = (inicio + fim) / 2;
         if (codigo == lista[meio].codigo) {
             return meio;
-        } else if (codigo > lista[meio].codigo) {
+        }
+        if (codigo > lista[meio].codigo) {
             inicio = meio + 1;
         } else {
             fim = meio - 1;
@@ -518,7 +597,7 @@ void incluir_produto(Produtos lista[], Fornecedores lista_fornecedor[], int tama
 
 void mesclar_produtos(Produtos lista_atual[], Produtos lista_adicionar[], Produtos nova_lista[], int tamanho_lista_s,
                       int tamanho_lista_add) {
-    int s = 0, t = 0, f = 0;
+    int s = 0, t = 0, f = 0, tamanho_lista_f = tamanho_lista_add + tamanho_lista_s;
 
     for (; s < tamanho_lista_s && t < tamanho_lista_add; f++) {
         if (lista_atual[s].codigo < lista_adicionar[t].codigo) {
@@ -565,14 +644,17 @@ void mesclar_produtos(Produtos lista_atual[], Produtos lista_adicionar[], Produt
         t++;
         f++;
     }
-    lista_atual = nova_lista;
+    cout << "Produto adicionado! " << endl;
 }
 
 // Fim da etapa 3#
 
 // Inicio da etapa 4#
 // Função para venda de produtos
-void vender_produto(int codigo_produto, Produtos lista_produtos[], Fornecedores lista_fornecedores[]) {
+void vender_produto(Produtos lista_produtos[], Fornecedores lista_fornecedores[]) {
+    int codigo_produto = 0;
+    cout << "Digite o código do produto que desejá comprar: ";
+    cin >> codigo_produto;
     int indice_produto = buscar_produto_por_codigo(lista_produtos, codigo_produto, 3);
     if (indice_produto == -1) {
         cout << "Produto não encontrado!" << endl;
@@ -596,10 +678,13 @@ void vender_produto(int codigo_produto, Produtos lista_produtos[], Fornecedores 
     cout << "Qual a quantidade de produtos que você deseja vender? ";
     cin >> qtd_produtos;
     // 4#.4
-    if (qtd_produtos > lista_produtos[indice_produto].qtd_estoque) {
+    while (qtd_produtos > lista_produtos[indice_produto].qtd_estoque) {
         cout << "A quantidade que foi solicitada para a compra é maior que a quantidade de produtos no estoque!" <<
                 endl;
+        cout << "Escolha outra quantidade: ";
+        cin >> qtd_produtos;
     }
+
     // 4#.5
     cout << "O valor total da venda do produto é de: " << (lista_produtos[indice_produto].valor_unitario * qtd_produtos)
             <<
@@ -666,8 +751,6 @@ void validar_se_palavra_for_palindromo(Produtos lista[], int tamanho) {
 
         if (palavraIgualPalindromo) {
             cout << "A descrição \"" << lista[index].descricao << "\" é um palíndromo!" << endl;
-        } else {
-            cout << "A descrição \"" << lista[index].descricao << "\" não é um palíndromo!" << endl;
         }
     }
 }
