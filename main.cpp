@@ -137,23 +137,6 @@ void ler_tipo_produtos(vector<Tipo_Produtos> &lista) {
     }
 }
 
-int buscar_tipo_produto_por_codigo(int codigo, vector<Tipo_Produtos> lista) {
-    int inicio = 0, fim = lista.size() - 1;
-    while (inicio <= fim) {
-        int meio = (inicio + fim) / 2;
-        if (codigo == lista[meio].codigo) {
-            return meio;
-        }
-        if (codigo > lista[meio].codigo) {
-            inicio = meio + 1;
-        } else {
-            fim = meio - 1;
-        }
-    }
-    cout << "Não existe tipo de produto com esse Código!" << endl;
-    return -1;
-}
-
 void ler_produtos(vector<Produtos> &lista, vector<Tipo_Produtos> lista_tipos, vector<Fornecedores> lista_fornecedores) {
     int qtd_produtos = 0;
     cout << "Quantos produtos você quer ler? ";
@@ -292,7 +275,7 @@ bool validar_cnpj(string cnpj) {
     return false;
 }
 
-void ler_fornecedores(vector<Fornecedores> &lista) {
+void ler_fornecedores(vector<Fornecedores> &lista, vector<Cidades> lista_cid) {
     int qtd_fornecedores = 0;
     cout << "Quantos fornecedores você quer ler? ";
     cin >> qtd_fornecedores;
@@ -333,9 +316,20 @@ void ler_fornecedores(vector<Fornecedores> &lista) {
         cout << "Telefone: ";
         getline(cin, novoForneced.telefone);
 
-        cout << "Codigo da cidade: ";
-        cin >> novoForneced.codigo_cidade;
-        cin.ignore();
+        do {
+            cout << "Codigo da cidade: ";
+            cin >> novoForneced.codigo_cidade;
+            cin.ignore();
+
+            int indice_cidade = buscar_objeto_por_codigo(lista_cid, novoForneced.codigo_cidade);
+            if (indice_cidade != -1) {
+                cout << "Nome da cidade localizada: " << lista_cid[indice_cidade].descricao << endl;
+                cout << "UF da cidade localizada: " << lista_cid[indice_cidade].UF << endl;
+                break;
+            } else {
+                cout << "Código fornecido inválido ou não existente! Tente novamente." << endl;
+            }
+        } while (true);
 
         cout << "Cnpj: ";
         getline(cin, novoForneced.cnpj);
@@ -378,23 +372,6 @@ void mesclar_fornecedores(vector<Fornecedores> &listaInicial, vector<Fornecedore
     }
 
     listaInicial = novaListaFinal;
-}
-
-int buscar_cidade_por_codigo(int codigo, vector<Cidades> lista) {
-    int inicio = 0, fim = lista.size() - 1;
-    while (inicio <= fim) {
-        int meio = (inicio + fim) / 2;
-        if (codigo == lista[meio].codigo) {
-            return meio;
-        }
-        if (codigo > lista[meio].codigo) {
-            inicio = meio + 1;
-        } else {
-            fim = meio - 1;
-        }
-    }
-    cout << "Não existe cidade com esse Código!" << endl;
-    return -1;
 }
 
 void incluir_novo_fornecedor(vector<Fornecedores> &lista, vector<Cidades> lista_cidades) {
@@ -448,7 +425,7 @@ void incluir_novo_fornecedor(vector<Fornecedores> &lista, vector<Cidades> lista_
             cin >> novoFornecedor.codigo_cidade;
             cin.ignore();
 
-            int indice_cidade = buscar_cidade_por_codigo(novoFornecedor.codigo_cidade, lista_cidades);
+            int indice_cidade = buscar_objeto_por_codigo(lista_cidades, novoFornecedor.codigo_cidade);
             if (indice_cidade != -1) {
                 cout << "Nome da cidade localizada: " << lista_cidades[indice_cidade].descricao << endl;
                 cout << "UF da cidade localizada: " << lista_cidades[indice_cidade].UF << endl;
@@ -574,6 +551,19 @@ void incluir_produto(vector<Produtos> &lista, vector<Fornecedores> lista_fornece
 
         cout << "Quantidade minima: ";
         cin >> novoProduto.estoque_minimo;
+
+        while (true) {
+            cout << "Estoque maximo: ";
+            cin >> novoProduto.estoque_maximo;
+            bool qtd_invalid = false;
+            if (novoProduto.estoque_minimo > novoProduto.estoque_maximo) {
+                cout << "Quantidade maxima inválida! Digite outra" << endl;
+                qtd_invalid = true;
+            } else {
+                qtd_invalid = false;
+            }
+            if (!qtd_invalid) break;
+        }
 
         cout << "Quantidade maxima: ";
         cin >> novoProduto.estoque_maximo;
@@ -813,7 +803,7 @@ void menu(vector<Tipo_Produtos> lista_tipo_produtos, vector<Produtos> lista_prod
                     ler_produtos(lista_produtos, lista_tipo_produtos, lista_fornecedores);
                     break;
                 case 2:
-                    ler_fornecedores(lista_fornecedores);
+                    ler_fornecedores(lista_fornecedores, lista_cidades);
                     break;
                 case 3:
                     ler_cidades(lista_cidades);
